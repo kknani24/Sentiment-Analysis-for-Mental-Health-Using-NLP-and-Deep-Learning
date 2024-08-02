@@ -13,7 +13,7 @@ This project aims to analyze mental health statements using Natural Language Pro
 6. [Visualizations](#visualizations)
 7. [Future Work](#future-work)
 8. [Contributing](#contributing)
-9. [License](#license)
+
 
 ## Installation
 
