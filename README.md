@@ -35,16 +35,14 @@ It's recommended to use a virtual environment:
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 ```
-#Install Dependencies
-```bash
-pip install -r requirements.txt
-```
+
+
 ### Install Dependencies
 
 Install the required libraries:
 
 ```bash
-pip install pandas plotly nltk scikit-learn textblob numpy wordcloud matplotlib tensorflow
+pip install -r requirements.txt
 ```
 
 ### Download NLTK Data
