@@ -35,7 +35,7 @@ It's recommended to use a virtual environment:
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 ```
-###Install Dependencies
+#Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
