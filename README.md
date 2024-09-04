@@ -31,7 +31,7 @@ This project aims to predict mental health status based on textual statements us
 To run this project, you need to have Python installed on your system. Clone the repository and install the required packages:
 
 ```bash
-git clone https://github.com/yourusername/mental-health-status-prediction.git
+git clone [https://github.com/kknani24/Sentiment-Analysis-for-Mental-Health-Using-NLP-and-Deep-Learning.git]
 cd mental-health-status-prediction
 pip install -r requirements.txt
 ```
@@ -55,7 +55,7 @@ tensorflow
 To run the main script:
 
 ```bash
-python mental_health_analysis.py
+python sentiment-analysis.ipynb
 ```
 
 ## Data Preprocessing
