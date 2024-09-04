@@ -1,199 +1,146 @@
+# Mental Health Status Prediction
 
-# Sentiment Analysis for Mental Health Using NLP and Deep Learning
-
-## Project Overview
-This project aims to analyze mental health statements using Natural Language Processing (NLP) techniques and Deep Learning models. It focuses on classifying mental health status based on textual data, providing insights into the distribution of mental health conditions, and visualizing the results.
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
+![Plotly](https://img.shields.io/badge/Plotly-%233F4F75.svg?style=for-the-badge&logo=plotly&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=white)
+![Keras](https://img.shields.io/badge/Keras-%23D00000.svg?style=for-the-badge&logo=Keras&logoColor=white)
 
 ## Table of Contents
-1. [Installation](#installation)
-2. [Dataset](#dataset)
-3. [Methodology](#methodology)
-4. [Code Structure](#code-structure)
-5. [Results](#results)
-6. [Visualizations](#visualizations)
-7. [Future Work](#future-work)
-8. [Contributing](#contributing)
+1. [Project Overview](#project-overview)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Data Preprocessing](#data-preprocessing)
+5. [Exploratory Data Analysis (EDA)](#exploratory-data-analysis-eda)
+6. [Model Architecture](#model-architecture)
+7. [Training and Evaluation](#training-and-evaluation)
+8. [Results Visualization](#results-visualization)
+9. [Prediction Function](#prediction-function)
+10. [Future Improvements](#future-improvements)
+11. [Contributing](#contributing)
+12. [License](#license)
 
+## Project Overview
+
+This project aims to predict mental health status based on textual statements using Natural Language Processing (NLP) techniques and a Convolutional Neural Network (CNN) model. The project includes data preprocessing, exploratory data analysis, model training, evaluation, and a prediction function for new statements.
 
 ## Installation
 
-### Clone the Repository
-
-First, clone the repository to your local machine:
+To run this project, you need to have Python installed on your system. Clone the repository and install the required packages:
 
 ```bash
-git clone https://github.com/kknani24/Sentiment-Analysis-for-Mental-Health-Using-NLP-and-Deep-Learning.git
-cd sentiment-analysis
-```
-
-
-### Set Up the Environment
-
-It's recommended to use a virtual environment:
-
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-```
-
-
-### Install Dependencies
-
-Install the required libraries:
-
-```bash
+git clone https://github.com/yourusername/mental-health-status-prediction.git
+cd mental-health-status-prediction
 pip install -r requirements.txt
 ```
 
-### Download NLTK Data
+The `requirements.txt` file should include:
 
-Run the following Python code to download necessary NLTK data:
-
-```python
-import nltk
-nltk.download('stopwords')
-nltk.download('punkt')
+```
+pandas
+plotly
+nltk
+scikit-learn
+textblob
+numpy
+wordcloud
+matplotlib
+tensorflow
 ```
 
-## Dataset
+## Usage
 
-The project uses a dataset named 'Combined Data.csv'. This dataset contains statements related to mental health and their corresponding status labels. The main columns used are:
-- `statement`: The textual content describing mental health experiences.
-- `status`: The mental health status label associated with each statement.
+To run the main script:
 
-Example of loading the dataset:
-
-```python
-import pandas as pd
-
-path = 'Combined Data.csv'
-df = pd.read_csv(path)
-
-print(df.head())
-print(df.info())
+```bash
+python mental_health_analysis.py
 ```
 
-## Methodology
+## Data Preprocessing
 
-1. **Data Preprocessing**:
-   - Cleaning text data (removing punctuation, links, etc.)
-   - Tokenization
-   - Removing stop words
+The data preprocessing steps include:
 
-   ```python
-   def preprocess_text(text):
-       text = text.lower()
-       text = re.sub(r'\[.*?\]', '', text)
-       text = re.sub(r'https?://\S+|www\.\S+', '', text)
-       # ... (more preprocessing steps)
-       return text
+1. Loading the data from 'Combined Data.csv'
+2. Handling missing values
+3. Text cleaning:
+   - Lowercasing
+   - Removing text in square brackets
+   - Removing links and HTML tags
+   - Removing punctuation and newlines
+   - Removing words containing numbers
+4. Tokenization and stopword removal
+5. Data augmentation using translation
 
-   df['cleaned_statement'] = df['statement'].apply(lambda x: preprocess_text(x))
-   ```
+## Exploratory Data Analysis (EDA)
 
-2. **Exploratory Data Analysis (EDA)**:
-   - Analyzing the distribution of mental health status labels
-   - Examining text length distribution
+The EDA phase includes:
 
-   ```python
-   import plotly.express as px
+1. Displaying basic dataset information
+2. Visualizing the distribution of mental health status
+3. Analyzing text length distribution
+4. Creating a word cloud of cleaned statements
+5. Visualizing the proportion of each status category
 
-   fig = px.histogram(df, x='status', title='Distribution of Mental Health Status')
-   fig.show()
-   ```
+## Model Architecture
 
-3. **Data Augmentation**:
-   - Using translation techniques to augment the dataset
-
-   ```python
-   def augment_text(text):
-       try:
-           blob = TextBlob(text)
-           translated = blob.translate(to='fr').translate(to='en')
-           return str(translated)
-       except Exception as e:
-           return text
-
-   df['augmented_statement'] = df['statement'].apply(augment_text)
-   ```
-
-4. **Model Development**:
-   - Tokenization and padding of sequences
-   - Building a Convolutional Neural Network (CNN) model using TensorFlow/Keras
-   - Training the model on the preprocessed data
-
-   ```python
-   from tensorflow.keras.models import Sequential
-   from tensorflow.keras.layers import Dense, Conv1D, GlobalMaxPooling1D, Embedding, Dropout
-
-   model = Sequential([
-       Embedding(input_dim=10000, output_dim=128),
-       Conv1D(filters=128, kernel_size=5, activation='relu'),
-       GlobalMaxPooling1D(),
-       Dense(128, activation='relu'),
-       Dropout(0.5),
-       Dense(len(label_map), activation='softmax')
-   ])
-
-   model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-   ```
-
-5. **Evaluation**:
-   - Assessing model performance using accuracy, classification report, and confusion matrix
-
-   ```python
-   from sklearn.metrics import classification_report, confusion_matrix
-
-   y_pred = model.predict(X_test)
-   y_pred_classes = np.argmax(y_pred, axis=1)
-
-   print(classification_report(y_test, y_pred_classes))
-   ```
-
-## Code Structure
-
-The main script contains the following sections:
-
-1. Importing libraries
-2. Loading and preprocessing data
-3. Exploratory Data Analysis
-4. Text preprocessing and augmentation
-5. Model building and training
-6. Evaluation and visualization
-
-## Results
-
-The CNN model achieves [insert accuracy here] accuracy on the test set. Detailed performance metrics, including precision, recall, and F1-score for each class, are provided in the classification report.
+The CNN model architecture:
 
 ```python
-# Example of printing the classification report
-print(classification_report(y_test, y_pred_classes))
+model = Sequential([
+    Embedding(input_dim=10000, output_dim=128),
+    Conv1D(filters=128, kernel_size=5, activation='relu'),
+    GlobalMaxPooling1D(),
+    Dense(128, activation='relu'),
+    Dropout(0.5),
+    Dense(len(label_map), activation='softmax')
+])
 ```
 
-## Visualizations
+## Training and Evaluation
 
-The project includes several visualizations to aid in understanding the data and results:
+The model is trained using:
+- Optimizer: Adam
+- Loss function: Sparse Categorical Crossentropy
+- Metrics: Accuracy
+- Epochs: 10
+- Validation split: 0.2
+- Batch size: 32
 
-1. Distribution of Mental Health Status
-2. Text Length Distribution
-3. Confusion Matrix
-4. Word Cloud of Cleaned Statements
-5. Proportion of Each Status Category (Pie Chart)
+Evaluation metrics include:
+- Test Accuracy
+- Classification Report
+- Confusion Matrix
 
-Example of creating a word cloud:
+## Results Visualization
+
+Results are visualized using Plotly:
+- Histogram of mental health status distribution
+- Text length distribution
+- Confusion matrix heatmap
+- Word cloud of cleaned statements
+- Pie chart of status category proportions
+
+## Prediction Function
+
+A `predict_status` function is provided to make predictions on new statements:
 
 ```python
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
-
-all_text = ' '.join(df['cleaned_statement'])
-wordcloud = WordCloud(width=800, height=400, background_color='white').generate(all_text)
-plt.figure(figsize=(10, 5))
-plt.imshow(wordcloud, interpolation='bilinear')
-plt.axis('off')
-plt.title('Word Cloud of Cleaned Statements')
-plt.show()
+predicted_status = predict_status(statement_to_predict, tokenizer, model, label_map, reverse_label_map)
 ```
 
+## Future Improvements
 
+Potential areas for improvement:
+1. Fine-tuning hyperparameters
+2. Experimenting with different model architectures (e.g., LSTM, Transformer)
+3. Incorporating more features (e.g., sentiment analysis scores)
+4. Collecting more diverse data to improve model generalization
 
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
