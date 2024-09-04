@@ -32,7 +32,7 @@ To run this project, you need to have Python installed on your system. Clone the
 
 ```bash
 git clone [https://github.com/kknani24/Sentiment-Analysis-for-Mental-Health-Using-NLP-and-Deep-Learning.git]
-cd mental-health-status-prediction
+cd sentiment-analysis.ipynb
 pip install -r requirements.txt
 ```
 
