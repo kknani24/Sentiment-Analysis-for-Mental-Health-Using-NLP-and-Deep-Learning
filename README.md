@@ -54,7 +54,7 @@ tensorflow
 To run the main script:
 
 ```bash
-python mental_health_analysis.py
+python sentiment-analysis.ipynb
 ```
 
 ## Data Preprocessing
